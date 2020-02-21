@@ -87,6 +87,9 @@ public class Parser {
         if (match(TokenType.NUMBER)) {
             return new NumberExpression(Double.parseDouble(currentToken.getText()));
         }
+        if(match(TokenType.WORD)){
+            return new VariableExpression(currentToken.getText());
+        }
         if(match(TokenType.LPAREN)){
             Expression result = expression();
             match(TokenType.RPAREN);

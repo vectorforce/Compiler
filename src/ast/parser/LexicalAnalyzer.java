@@ -24,17 +24,32 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
     }
 
     public List<Token> tokenize() {
-        while(currentPosition < lenght){
+        while (currentPosition < lenght) {
             final char currentChar = peek(0);
-            if(Character.isDigit(currentChar)){
+            if (Character.isDigit(currentChar)) {
                 tokenizeNumber();
-            } else if(OPERATOR_CHARS.indexOf(currentChar) != -1){
+            } else if (Character.isLetter(currentChar)) {
+                tokenizeWord();
+            } else if (OPERATOR_CHARS.indexOf(currentChar) != -1) {
                 tokenizeOperator();
             } else {
                 next(); // Skip other chars(whitespaces...)
             }
         }
         return tokens;
+    }
+
+    private void tokenizeWord() {
+        final StringBuilder buffer = new StringBuilder();
+        char currentChar = peek(0);
+        while (true) {
+            if (!Character.isLetterOrDigit(currentChar) && (currentChar != '_') && (currentChar != '$')) {
+                break;
+            }
+            buffer.append(currentChar);
+            currentChar = next();
+        }
+        addToken(TokenType.WORD, buffer.toString());
     }
 
     private void tokenizeOperator() {
@@ -46,21 +61,28 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
     private void tokenizeNumber() {
         final StringBuilder buffer = new StringBuilder();
         char currentChar = peek(0);
-        while(Character.isDigit(currentChar)){
+        while (true) {
+            if (currentChar == '.') {
+                if (buffer.indexOf(".") != -1) {
+                    throw new RuntimeException("Invalid float number");
+                }
+            } else if (!Character.isDigit(currentChar)) {
+                break;
+            }
             buffer.append(currentChar);
             currentChar = next();
         }
         addToken(TokenType.NUMBER, buffer.toString());
     }
 
-    private char next(){
+    private char next() {
         currentPosition++;
         return peek(0);
     }
 
-    private char peek(int relativePosition){    // Return char at relativePosition in the text
+    private char peek(int relativePosition) {    // Return char at relativePosition in the text
         final int position = currentPosition + relativePosition;
-        if(position >= lenght){
+        if (position >= lenght) {
             return '\0';
         }
         return inputText.charAt(position);

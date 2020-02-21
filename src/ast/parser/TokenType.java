@@ -1,7 +1,7 @@
 package ast.parser;
 
 public enum TokenType {       // Enumeration for all types of tokens
-    NUMBER,
+    NUMBER, WORD,
 
     PLUS, MINUS, STAR, SLASH,
 

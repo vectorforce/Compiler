@@ -22,6 +22,6 @@ public class UnaryExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("%c %s", operation, expression);
+        return String.format("(%c%s)", operation, expression);
     }
 }
