@@ -1,5 +1,8 @@
 package ast;
 
+import vars.NumberValue;
+import vars.Value;
+
 public class UnaryExpression implements Expression {
     private final Expression expression;
     private final char operation;
@@ -10,10 +13,10 @@ public class UnaryExpression implements Expression {
     }
 
     @Override
-    public double evaluate() {
+    public Value evaluate() {
         switch (operation) {
             case '-':
-                return -expression.evaluate();
+                return new NumberValue(-expression.evaluate().asDouble());
             case '+':
             default:
                 return expression.evaluate();

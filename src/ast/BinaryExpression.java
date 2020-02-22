@@ -1,5 +1,9 @@
 package ast;
 
+import vars.NumberValue;
+import vars.StringValue;
+import vars.Value;
+
 public class BinaryExpression implements Expression {
     private final Expression expression1;
     private final Expression expression2;
@@ -12,17 +16,39 @@ public class BinaryExpression implements Expression {
     }
 
     @Override
-    public double evaluate() {
+    public Value evaluate() {
+        final Value value1 = expression1.evaluate();
+        final Value value2 = expression2.evaluate();
+        if (value1 instanceof StringValue) {
+            final String string1 = value1.asString();
+            switch (operation){
+                case '*':
+                    if(!(value2 instanceof NumberValue)){
+                        throw new RuntimeException("Invalid type of second token");
+                    }
+                    final int iterarions = (int)value2.asDouble();
+                    final StringBuilder buffer = new StringBuilder();
+                for(int index = 0; index < iterarions; index++){
+                    buffer.append(string1);
+                }
+                return new StringValue(buffer.toString());
+                case '+':
+                    default: return new StringValue(string1 + value2.asString());
+            }
+        }
+
+        final double doubleExpression1 = expression1.evaluate().asDouble();
+        final double doubleExpression2 = expression2.evaluate().asDouble();
         switch (operation) {
             case '-':
-                return expression1.evaluate() - expression2.evaluate();
+                return new NumberValue(doubleExpression1 - doubleExpression2);
             case '*':
-                return expression1.evaluate() * expression2.evaluate();
+                return new NumberValue(doubleExpression1 * doubleExpression2);
             case '/':
-                return expression1.evaluate() / expression2.evaluate();
+                return new NumberValue(doubleExpression1 / doubleExpression2);
             case '+':
             default:
-                return expression1.evaluate() + expression2.evaluate();
+                return new NumberValue(doubleExpression1 + doubleExpression2);
         }
     }
 

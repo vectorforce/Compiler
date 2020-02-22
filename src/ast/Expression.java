@@ -1,5 +1,7 @@
 package ast;
 
+import vars.Value;
+
 public interface Expression {
-    double evaluate();
+    Value evaluate();
 }

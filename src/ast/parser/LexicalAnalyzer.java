@@ -33,11 +33,47 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
                 tokenizeWord();
             } else if (OPERATOR_CHARS.indexOf(currentChar) != -1) {
                 tokenizeOperator();
+            } else if (currentChar == '"') {
+                TokenizeText();
             } else {
                 next(); // Skip other chars(whitespaces...)
             }
         }
         return tokens;
+    }
+
+    private void TokenizeText() {
+        final StringBuilder buffer = new StringBuilder();
+        next();    // Skip "
+        char currentChar = peek(0);
+        while (true) {
+            if (currentChar == '"') {
+                break;
+            }
+            if (currentChar == '\\') {
+                currentChar = next();
+                switch (currentChar) {
+                    case '"':
+                        currentChar = next();
+                        buffer.append('"');
+                        continue;
+                    case 'n':
+                        currentChar = next();
+                        buffer.append('\n');
+                        continue;
+                    case 't':
+                        currentChar = next();
+                        buffer.append('\t');
+                        continue;
+                }
+                buffer.append('\\');
+                continue;
+            }
+            buffer.append(currentChar);
+            currentChar = next();
+        }
+        addToken(TokenType.TEXT, buffer.toString());
+        next();    // Skip "
     }
 
     private void tokenizeWord() {
@@ -50,7 +86,12 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
             buffer.append(currentChar);
             currentChar = next();
         }
-        addToken(TokenType.WORD, buffer.toString());
+        String toString = buffer.toString();
+        if (toString.equals("print")) {
+            addToken(TokenType.PRINT);
+        } else {
+            addToken(TokenType.WORD, toString);
+        }
     }
 
     private void tokenizeOperator() {

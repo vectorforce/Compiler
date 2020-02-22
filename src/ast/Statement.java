@@ -1,6 +1,5 @@
 package ast;
 
-public interface Statement {    //Interface Statement for lang's operators
-
+public interface Statement {
     public void execute();
 }

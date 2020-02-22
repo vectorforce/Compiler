@@ -1,9 +1,9 @@
 package ast;
 
-import lib.Variables;
+import vars.Value;
+import vars.Variables;
 
 public class AssignmentStatement implements Statement {
-
     private final String variable;
     private final Expression expression;
 
@@ -14,7 +14,7 @@ public class AssignmentStatement implements Statement {
 
     @Override
     public void execute() {
-        final double result = expression.evaluate();
+        final Value result = expression.evaluate();
         Variables.set(variable, result);
     }
 

@@ -31,6 +31,9 @@ public class Parser {
      * and their priority
      * */
     private Statement statement(){
+        if(match(TokenType.PRINT)){
+            return new PrintStatement(expression());
+        }
         return assignmentStatement();
     }
 
@@ -96,10 +99,13 @@ public class Parser {
         final Token currentToken = peek(0);
 
         if (match(TokenType.NUMBER)) {
-            return new NumberExpression(Double.parseDouble(currentToken.getText()));
+            return new ValueExpression(Double.parseDouble(currentToken.getText()));
         }
         if (match(TokenType.WORD)) {
             return new VariableExpression(currentToken.getText());
+        }
+        if(match(TokenType.TEXT)){
+            return new ValueExpression(currentToken.getText());
         }
         if (match(TokenType.LPAREN)) {
             Expression result = expression();

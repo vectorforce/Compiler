@@ -1,0 +1,5 @@
+var = 2 + 2
+print var
+text1 = "\nthis is "
+text2 = "text"
+print text1 + text2

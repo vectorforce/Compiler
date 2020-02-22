@@ -1,19 +1,19 @@
-package ast;
+package vars;
 
-public class NumberExpression implements Expression {
+public class NumberValue implements Value {
     private final double value;
 
-    public NumberExpression(double value) {
+    public NumberValue(double value) {
         this.value = value;
     }
 
     @Override
-    public double evaluate() {
+    public double asDouble() {
         return value;
     }
 
     @Override
-    public String toString() {
+    public String asString() {
         return Double.toString(value);
     }
 }
