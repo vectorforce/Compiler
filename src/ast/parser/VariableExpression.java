@@ -1,7 +1,7 @@
 package ast.parser;
 
 import ast.Expression;
-import lib.Constants;
+import lib.Variables;
 
 public class VariableExpression implements Expression {
     private final String name;
@@ -12,10 +12,10 @@ public class VariableExpression implements Expression {
 
     @Override
     public double evaluate() {
-        if(!Constants.isExists(name)){
+        if(!Variables.isExists(name)){
             throw new RuntimeException("Constant does not exists");
         }
-        return Constants.get(name);
+        return Variables.get(name);
     }
 
     @Override

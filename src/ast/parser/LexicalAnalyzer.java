@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LexicalAnalyzer {  // Class for lexical analysis of input text
-    private static final String OPERATOR_CHARS = "+-*/()";
+    private static final String OPERATOR_CHARS = "+-*/()=";
     private static final TokenType[] OPERATOR_TOKENS = {
             TokenType.PLUS, TokenType.MINUS, TokenType.STAR, TokenType.SLASH,
-            TokenType.LPAREN, TokenType.RPAREN
+            TokenType.LPAREN, TokenType.RPAREN,
+            TokenType.EQ
     };
 
     private final String inputText;

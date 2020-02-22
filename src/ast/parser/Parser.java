@@ -1,9 +1,6 @@
 package ast.parser;
 
-import ast.BinaryExpression;
-import ast.Expression;
-import ast.NumberExpression;
-import ast.UnaryExpression;
+import ast.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +18,10 @@ public class Parser {
         this.size = tokens.size();
     }
 
-    public List<Expression> parse() {
-        final List<Expression> result = new ArrayList<>();
+    public List<Statement> parse() {
+        final List<Statement> result = new ArrayList<>();
         while (!match(TokenType.EOF)) {
-            result.add(expression());
+            result.add(statement());
         }
         return result;
     }
@@ -33,6 +30,20 @@ public class Parser {
      * Stack of operations
      * and their priority
      * */
+    private Statement statement(){
+        return assignmentStatement();
+    }
+
+    private Statement assignmentStatement() {
+        final Token currentToken = peek(0);
+        if(match(TokenType.WORD) && peek(0).getType() == TokenType.EQ){
+            final String variable = currentToken.getText();
+            match(TokenType.EQ);
+            return new AssignmentStatement(variable, expression());
+        }
+        throw new RuntimeException("Unknown statement");
+    }
+
     private Expression expression() {
         return additive();
     }
@@ -87,15 +98,24 @@ public class Parser {
         if (match(TokenType.NUMBER)) {
             return new NumberExpression(Double.parseDouble(currentToken.getText()));
         }
-        if(match(TokenType.WORD)){
+        if (match(TokenType.WORD)) {
             return new VariableExpression(currentToken.getText());
         }
-        if(match(TokenType.LPAREN)){
+        if (match(TokenType.LPAREN)) {
             Expression result = expression();
             match(TokenType.RPAREN);
             return result;
         }
         throw new RuntimeException("Unknown expression");
+    }
+
+    private Token consume(TokenType tokenType) {    // Match check of types
+        final Token currentToken = peek(0);
+        if (tokenType != currentToken.getType()) {
+            throw new RuntimeException("Token " + currentToken + " doesn't match " + tokenType);
+        }
+        currentPosition++;
+        return currentToken;
     }
 
     private boolean match(TokenType tokenType) {    // Match check of types
