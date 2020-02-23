@@ -26,7 +26,7 @@ public class BinaryExpression implements Expression {
                     if(!(value2 instanceof NumberValue)){
                         throw new RuntimeException("Invalid type of second token");
                     }
-                    final int iterarions = (int)value2.asDouble();
+                    final int iterarions = (int)value2.asNumber();
                     final StringBuilder buffer = new StringBuilder();
                 for(int index = 0; index < iterarions; index++){
                     buffer.append(string1);
@@ -37,8 +37,8 @@ public class BinaryExpression implements Expression {
             }
         }
 
-        final double doubleExpression1 = expression1.evaluate().asDouble();
-        final double doubleExpression2 = expression2.evaluate().asDouble();
+        final double doubleExpression1 = expression1.evaluate().asNumber();
+        final double doubleExpression2 = expression2.evaluate().asNumber();
         switch (operation) {
             case '-':
                 return new NumberValue(doubleExpression1 - doubleExpression2);

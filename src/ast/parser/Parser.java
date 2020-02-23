@@ -30,16 +30,19 @@ public class Parser {
      * Stack of operations
      * and their priority
      * */
-    private Statement statement(){
-        if(match(TokenType.PRINT)){
+    private Statement statement() {
+        if (match(TokenType.PRINT)) {
             return new PrintStatement(expression());
+        }
+        if(match(TokenType.IF)){
+            return ifElse();
         }
         return assignmentStatement();
     }
 
     private Statement assignmentStatement() {
         final Token currentToken = peek(0);
-        if(match(TokenType.WORD) && peek(0).getType() == TokenType.EQ){
+        if (match(TokenType.WORD) && peek(0).getType() == TokenType.EQ) {
             final String variable = currentToken.getText();
             match(TokenType.EQ);
             return new AssignmentStatement(variable, expression());
@@ -47,8 +50,41 @@ public class Parser {
         throw new RuntimeException("Unknown statement");
     }
 
+    private Statement ifElse(){
+        final Expression condition = expression();
+        final Statement ifStatement = statement();
+        final Statement elseSteteement;
+        if(match(TokenType.ELSE)){
+            elseSteteement = statement();
+        } else {
+            elseSteteement = null;
+        }
+        return new IfStatement(condition, ifStatement, elseSteteement);
+    }
+
     private Expression expression() {
-        return additive();
+        return conditionalExpression();
+    }
+
+    private Expression conditionalExpression() {
+        Expression result = additive();
+
+        while (true) {
+            if (match(TokenType.EQ)) {
+                result = new ConditionalExpression('=', result, additive());
+                continue;
+            }
+            if (match(TokenType.LT)) {
+                result = new ConditionalExpression('<', result, additive());
+                continue;
+            }
+            if (match(TokenType.GT)) {
+                result = new ConditionalExpression('>', result, additive());
+                continue;
+            }
+            break;
+        }
+        return result;
     }
 
     private Expression additive() {
@@ -104,7 +140,7 @@ public class Parser {
         if (match(TokenType.WORD)) {
             return new VariableExpression(currentToken.getText());
         }
-        if(match(TokenType.TEXT)){
+        if (match(TokenType.TEXT)) {
             return new ValueExpression(currentToken.getText());
         }
         if (match(TokenType.LPAREN)) {
