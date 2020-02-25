@@ -12,10 +12,15 @@ if (var == 14) {
  print "\n3"
 }
     else print "\nNo"
-counter = 1;
-while (counter <= 10) {
+
+for i = 0; i < 5; i = i + 1 {
+    print "\ni = "
+    print i
+}
+
+counter = 1
+while (counter <= 3) {
 print"\n"
 print "While"
-print"\n"
 counter = counter + 1
 }

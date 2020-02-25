@@ -36,7 +36,6 @@ public class Parser {
         while(!match(TokenType.RBRACE)){
             blockStatement.add(statement());
         }
-//        consume(TokenType.RBRACE);  // Skip }
         return blockStatement;
     }
 
