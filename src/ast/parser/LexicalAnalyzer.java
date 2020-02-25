@@ -73,10 +73,7 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
         final StringBuilder buffer = new StringBuilder();
         next();    // Skip "
         char currentChar = peek(0);
-        while (true) {
-            if (currentChar == '"') {
-                break;
-            }
+        while (currentChar != '"') {
             if (currentChar == '\\') {
                 currentChar = next();
                 switch (currentChar) {
@@ -106,10 +103,7 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
     private void tokenizeWord() {
         final StringBuilder buffer = new StringBuilder();
         char currentChar = peek(0);
-        while (true) {
-            if (!Character.isLetterOrDigit(currentChar) && (currentChar != '_') && (currentChar != '$')) {
-                break;
-            }
+        while (Character.isLetterOrDigit(currentChar) || (currentChar == '_') || (currentChar == '$')) {
             buffer.append(currentChar);
             currentChar = next();
         }

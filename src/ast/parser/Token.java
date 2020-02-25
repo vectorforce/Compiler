@@ -4,15 +4,11 @@ public class Token {
     private TokenType type;
     private String text;
 
-    public Token(TokenType type, String text) {
+    Token(TokenType type, String text) {
         this.type = type;
         this.text = text;
     }
-
-    public Token() {
-    }
-
-    // Getters and setters
+    
     public TokenType getType() {
         return type;
     }

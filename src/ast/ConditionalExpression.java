@@ -4,7 +4,7 @@ import vars.NumberValue;
 import vars.Value;
 
 public class ConditionalExpression implements Expression {
-    public static enum Operator {
+    public enum Operator {
         PLUS("+"), MINUS("-"), MULTIPLY("*"), DEVIDE("*"),
         EQUALS("=="), NOT_EQUALS("!="),
         LT("<"), LTEQ("<="), GT(">"), GTEQ(">="),

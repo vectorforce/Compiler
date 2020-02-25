@@ -8,11 +8,11 @@ import java.util.List;
 public class BlockStatement implements Statement {
     private List<Statement> statements;
 
-    public BlockStatement() {
+    BlockStatement() {
         this.statements = new ArrayList<>();
     }
 
-    public void add(Statement statement){
+    void add(Statement statement){
         statements.add(statement);
     }
 
