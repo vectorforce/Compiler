@@ -15,12 +15,7 @@ public class Compiler {
         for (Token token: tokens) {
 //            System.out.println(token);
         }
-        final List<Statement> statements = new Parser(tokens).parse();
-        for (Statement statement: statements) {
-//            System.out.println(statement);
-        }
-        for (Statement statement: statements) {
-            statement.execute();
-        }
+        final Statement statement = new Parser(tokens).parse();
+        statement.execute();
     }
 }

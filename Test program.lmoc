@@ -1,8 +1,21 @@
 var = 2 + 2
 print var
 var2 = 10
+
 if var < var2 print "\nYes"
     else print "\nNo"
+
 var = var + var2
-if (var == 14) print "\nYes"
+if (var == 14) {
+ print "\n1"
+ print "\n2"
+ print "\n3"
+}
     else print "\nNo"
+counter = 1;
+while (counter <= 10) {
+print"\n"
+print "While"
+print"\n"
+counter = counter + 1
+}

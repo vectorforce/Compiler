@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LexicalAnalyzer {  // Class for lexical analysis of input text
-    private static final String OPERATOR_CHARS = "+-*/()=<>!&|";
+    private static final String OPERATOR_CHARS = "+-*/(){}=<>!&|;";
 
     private final static Map<String, TokenType> OPERATORS;
 
@@ -18,9 +18,12 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
         OPERATORS.put("/", TokenType.SLASH);
         OPERATORS.put("(", TokenType.LPAREN);
         OPERATORS.put(")", TokenType.RPAREN);
+        OPERATORS.put("{", TokenType.LBRACE);
+        OPERATORS.put("}", TokenType.RBRACE);
         OPERATORS.put("=", TokenType.EQ);
         OPERATORS.put("<", TokenType.LT);
         OPERATORS.put(">", TokenType.GT);
+        OPERATORS.put(";", TokenType.SEMICOLON);
 
         OPERATORS.put("!", TokenType.EXCLUDE);
         OPERATORS.put("&", TokenType.AMP);
@@ -122,6 +125,12 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
             case "else":
                 addToken(TokenType.ELSE);
                 break;
+            case "for":
+                addToken(TokenType.FOR);
+                break;
+            case "while":
+                addToken(TokenType.WHILE);
+                break;
             default:
                 addToken(TokenType.WORD, toString);
                 break;
@@ -133,7 +142,6 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
         final StringBuilder buffer = new StringBuilder();
         while (true) {
             final String currentBuffer = buffer.toString();
-            // <=p
             if(!OPERATORS.containsKey(currentBuffer + currentChar) && !currentBuffer.isEmpty()){
                     addToken(OPERATORS.get(currentBuffer));
                     return;
