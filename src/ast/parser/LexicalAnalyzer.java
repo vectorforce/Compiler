@@ -1,16 +1,39 @@
 package ast.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LexicalAnalyzer {  // Class for lexical analysis of input text
-    private static final String OPERATOR_CHARS = "+-*/()=<>";
-    private static final TokenType[] OPERATOR_TOKENS = {
-            TokenType.PLUS, TokenType.MINUS, TokenType.STAR, TokenType.SLASH,
-            TokenType.LPAREN, TokenType.RPAREN,
-            TokenType.EQ, TokenType.LT, TokenType.GT,
-            TokenType.IF, TokenType.ELSE
-    };
+    private static final String OPERATOR_CHARS = "+-*/()=<>!&|";
+
+    private final static Map<String, TokenType> OPERATORS;
+
+    static {
+        OPERATORS = new HashMap<>();
+        OPERATORS.put("+", TokenType.PLUS);
+        OPERATORS.put("-", TokenType.MINUS);
+        OPERATORS.put("*", TokenType.STAR);
+        OPERATORS.put("/", TokenType.SLASH);
+        OPERATORS.put("(", TokenType.LPAREN);
+        OPERATORS.put(")", TokenType.RPAREN);
+        OPERATORS.put("=", TokenType.EQ);
+        OPERATORS.put("<", TokenType.LT);
+        OPERATORS.put(">", TokenType.GT);
+
+        OPERATORS.put("!", TokenType.EXCLUDE);
+        OPERATORS.put("&", TokenType.AMP);
+        OPERATORS.put("|", TokenType.BAR);
+
+        OPERATORS.put("==", TokenType.EQEQ);
+        OPERATORS.put("!=", TokenType.EXCLUDEEQ);
+        OPERATORS.put("<=", TokenType.LTEQ);
+        OPERATORS.put(">=", TokenType.GTEQ);
+
+        OPERATORS.put("&&", TokenType.AMPAMP);
+        OPERATORS.put("||", TokenType.BARBAR);
+    }
 
     private final String inputText;
     private final int lenght;
@@ -106,9 +129,18 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
     }
 
     private void tokenizeOperator() {
-        final int position = OPERATOR_CHARS.indexOf(peek(0));
-        addToken(OPERATOR_TOKENS[position]);
-        next();
+        char currentChar = peek(0);
+        final StringBuilder buffer = new StringBuilder();
+        while (true) {
+            final String currentBuffer = buffer.toString();
+            // <=p
+            if(!OPERATORS.containsKey(currentBuffer + currentChar) && !currentBuffer.isEmpty()){
+                    addToken(OPERATORS.get(currentBuffer));
+                    return;
+            }
+            buffer.append(currentChar);
+            currentChar = next();
+        }
     }
 
     private void tokenizeNumber() {

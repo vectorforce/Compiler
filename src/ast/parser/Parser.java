@@ -34,7 +34,7 @@ public class Parser {
         if (match(TokenType.PRINT)) {
             return new PrintStatement(expression());
         }
-        if(match(TokenType.IF)){
+        if (match(TokenType.IF)) {
             return ifElse();
         }
         return assignmentStatement();
@@ -50,11 +50,11 @@ public class Parser {
         throw new RuntimeException("Unknown statement");
     }
 
-    private Statement ifElse(){
+    private Statement ifElse() {
         final Expression condition = expression();
         final Statement ifStatement = statement();
         final Statement elseSteteement;
-        if(match(TokenType.ELSE)){
+        if (match(TokenType.ELSE)) {
             elseSteteement = statement();
         } else {
             elseSteteement = null;
@@ -63,24 +63,69 @@ public class Parser {
     }
 
     private Expression expression() {
-        return conditionalExpression();
+        return logicalOr();
     }
+
+    private Expression logicalOr() {
+        Expression result = logicalAnd();
+        while (true) {
+            if (match(TokenType.BARBAR)) {
+                result = new ConditionalExpression(ConditionalExpression.Operator.OR, result, logicalAnd());
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
+
+    private Expression logicalAnd() {
+        Expression result = conditionalExpression();
+        while (true) {
+            if (match(TokenType.AMPAMP)) {
+                result = new ConditionalExpression(ConditionalExpression.Operator.AND, result, conditionalExpression());
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
+
+//    private Expression equality() {
+//        Expression result = conditionalExpression();
+//        if (match(TokenType.EQEQ)) {
+//            return new ConditionalExpression(ConditionalExpression.Operator.EQUALS, result, conditionalExpression());
+//        }
+//        if (match(TokenType.EXCLUDEEQ)) {
+//            return new ConditionalExpression(ConditionalExpression.Operator.NOT_EQUALS, result, conditionalExpression());
+//        }
+//        return result;
+//    }
 
     private Expression conditionalExpression() {
         Expression result = additive();
 
         while (true) {
-            if (match(TokenType.EQ)) {
-                result = new ConditionalExpression('=', result, additive());
+            if (match(TokenType.LT)) {
+                result = new ConditionalExpression(ConditionalExpression.Operator.LT, result, additive());
                 continue;
             }
-            if (match(TokenType.LT)) {
-                result = new ConditionalExpression('<', result, additive());
+            if (match(TokenType.LTEQ)) {
+                result = new ConditionalExpression(ConditionalExpression.Operator.LTEQ, result, additive());
                 continue;
             }
             if (match(TokenType.GT)) {
-                result = new ConditionalExpression('>', result, additive());
+                result = new ConditionalExpression(ConditionalExpression.Operator.GT, result, additive());
                 continue;
+            }
+            if (match(TokenType.GTEQ)) {
+                result = new ConditionalExpression(ConditionalExpression.Operator.GTEQ, result, additive());
+                continue;
+            }
+            if (match(TokenType.EQEQ)) {
+                return new ConditionalExpression(ConditionalExpression.Operator.EQUALS, result, additive());
+            }
+            if (match(TokenType.EXCLUDEEQ)) {
+                return new ConditionalExpression(ConditionalExpression.Operator.NOT_EQUALS, result, additive());
             }
             break;
         }

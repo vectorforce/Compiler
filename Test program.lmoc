@@ -1,3 +1,8 @@
 var = 2 + 2
 print var
-if var > 31 print "\nYes" else print "\nNo"
+var2 = 10
+if var < var2 print "\nYes"
+    else print "\nNo"
+var = var + var2
+if (var == 14) print "\nYes"
+    else print "\nNo"
