@@ -122,6 +122,15 @@ public class LexicalAnalyzer {  // Class for lexical analysis of input text
             case "for":
                 addToken(TokenType.FOR);
                 break;
+            case "do":
+                addToken(TokenType.DO);
+                break;
+            case "break":
+                addToken(TokenType.BREAK);
+                break;
+            case "continue":
+                addToken(TokenType.CONTINUE);
+                break;
             case "while":
                 addToken(TokenType.WHILE);
                 break;

@@ -2,6 +2,7 @@ package ast.parser;
 
 import ast.*;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.List;
 
 public class Parser {
@@ -29,17 +30,17 @@ public class Parser {
      * Stack of operations
      * by their priority
      * */
-    private Statement block(){
+    private Statement block() {
         final BlockStatement blockStatement = new BlockStatement();
         consume(TokenType.LBRACE);  // Skip {
-        while(!match(TokenType.RBRACE)){
+        while (!match(TokenType.RBRACE)) {
             blockStatement.add(statement());
         }
         return blockStatement;
     }
 
-    private Statement statementOrBlock(){
-        if(peek(0).getType() == TokenType.LBRACE){
+    private Statement statementOrBlock() {
+        if (peek(0).getType() == TokenType.LBRACE) {
             return block();
         }
         return statement();
@@ -52,11 +53,20 @@ public class Parser {
         if (match(TokenType.IF)) {
             return ifElse();
         }
+        if (match(TokenType.DO)) {
+            return doWhileStatement();
+        }
         if (match(TokenType.WHILE)) {
             return whileStatement();
         }
         if (match(TokenType.FOR)) {
             return forStatement();
+        }
+        if (match(TokenType.BREAK)) {
+            return new BreakStatement();
+        }
+        if (match(TokenType.CONTINUE)) {
+            return new ContinueStatement();
         }
         return assignmentStatement();
     }
@@ -83,7 +93,14 @@ public class Parser {
         return new IfStatement(condition, ifStatement, elseStatement);
     }
 
-    private Statement whileStatement(){
+    private Statement doWhileStatement() {
+        final Statement statement = statementOrBlock();
+        consume(TokenType.WHILE);
+        final Expression condition = expression();
+        return new DoWhileStatement(condition, statement);
+    }
+
+    private Statement whileStatement() {
         final Expression condition = expression();
         final Statement statement = statementOrBlock();
         return new WhileStatement(condition, statement);

@@ -3,7 +3,7 @@ package ast.parser;
 public enum TokenType {       // Enumeration for all types of tokens
     NUMBER, WORD, TEXT,
 
-    PRINT, IF, ELSE, FOR, WHILE,
+    PRINT, IF, ELSE, FOR, WHILE, DO, BREAK, CONTINUE,
 
     PLUS, MINUS, STAR, SLASH,
 
