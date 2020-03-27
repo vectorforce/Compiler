@@ -1,4 +1,4 @@
-var = 2 + 2
+var = 2 + 2.8
 print var
 var2 = 10
 
@@ -46,3 +46,7 @@ do {
     print j
     j = j + 1
 } while (j != 5)
+
+print "\n\nsin(PI) = "
+result = sin(PI)
+echo(result)
