@@ -1,12 +1,11 @@
 package main.java.com.vectorforce.compiler.ast;
 
-import main.java.com.vectorforce.compiler.vars.Functions;
-import main.java.com.vectorforce.compiler.vars.Value;
+import main.java.com.vectorforce.compiler.vars.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionalExpression implements Expression{
+public class FunctionalExpression implements Expression {
     private final String name;
     private final List<Expression> arguments;
 
@@ -31,6 +30,19 @@ public class FunctionalExpression implements Expression{
         for (int index = 0; index < size; index++) {
             values[index] = arguments.get(index).evaluate();
         }
-        return Functions.get(name).execute(values);
+        final Function function = Functions.get(name);
+        if (function instanceof UserDefinedFunction) {
+            final UserDefinedFunction userDefinedFunction = (UserDefinedFunction) function;
+            if(size != userDefinedFunction.getArgsCount()) {
+                throw new RuntimeException("Args count mismatch");
+            }
+            Variables.push();   // push vars in stack for get copy of this
+            for(int index = 0; index < size; index++) {
+                Variables.set(userDefinedFunction.getArgsName(index), values[index]);
+            }
+            final Value result = userDefinedFunction.execute(values);
+            Variables.pop();
+        }
+        return function.execute(values);
     }
 }

@@ -2,6 +2,7 @@ package main.java.com.vectorforce.compiler.ast.parser;
 
 import main.java.com.vectorforce.compiler.ast.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
@@ -67,6 +68,9 @@ public class Parser {
         if (match(TokenType.CONTINUE)) {
             return new ContinueStatement();
         }
+        if (match(TokenType.DEF)) {
+            return functionDefine();
+        }
         if (peek(0).getType() == TokenType.WORD && peek(1).getType() == TokenType.LPAREN) {
             return new FunctionStatement(function());
         }
@@ -127,6 +131,18 @@ public class Parser {
             match(TokenType.COMMA);
         }
         return function;
+    }
+
+    private FunctionDefineStatement functionDefine() {
+        final String name = consume(TokenType.WORD).getText();
+        consume(TokenType.LPAREN);
+        final List<String> argNames = new ArrayList<>();
+        while (!match(TokenType.RPAREN)) {
+            argNames.add(consume(TokenType.WORD).getText());
+            match(TokenType.COMMA);
+        }
+        final Statement body = statementOrBlock();
+        return new FunctionDefineStatement(name, argNames, body);
     }
 
     private Expression expression() {

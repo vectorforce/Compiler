@@ -1,3 +1,16 @@
+def ownFunction(a, b) {
+ echo("a = ", a, " b = ", b)
+}
+
+a = 15
+b = 25
+ownFunction(a, b)
+
+print a
+print "\n"
+print b
+print "\n\n"
+
 var = 2 + 2.8
 print var
 var2 = 10
