@@ -1,6 +1,6 @@
 package main.java.com.vectorforce.compiler.vars;
 
-import main.java.com.vectorforce.compiler.ast.Statement;
+import main.java.com.vectorforce.compiler.parser.ast.Statement;
 
 import java.util.List;
 
