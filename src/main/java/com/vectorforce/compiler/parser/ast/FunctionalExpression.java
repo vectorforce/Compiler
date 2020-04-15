@@ -40,7 +40,7 @@ public class FunctionalExpression implements Expression {
             for(int index = 0; index < size; index++) {
                 Variables.set(userDefinedFunction.getArgsName(index), values[index]);
             }
-            final Value result = userDefinedFunction.execute(values);
+            userDefinedFunction.execute(values);
             Variables.pop();
         }
         return function.execute(values);

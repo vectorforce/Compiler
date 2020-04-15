@@ -173,17 +173,6 @@ public class Parser {
         return result;
     }
 
-//    private Expression equality() {
-//        Expression result = conditionalExpression();
-//        if (match(TokenType.EQEQ)) {
-//            return new ConditionalExpression(ConditionalExpression.Operator.EQUALS, result, conditionalExpression());
-//        }
-//        if (match(TokenType.EXCLUDEEQ)) {
-//            return new ConditionalExpression(ConditionalExpression.Operator.NOT_EQUALS, result, conditionalExpression());
-//        }
-//        return result;
-//    }
-
     private Expression conditionalExpression() {
         Expression result = additive();
 

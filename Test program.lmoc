@@ -6,6 +6,8 @@ a = 15
 b = 25
 ownFunction(a, b)
 
+if (a != b) print "a != b"
+
 print a
 print "\n"
 print b
