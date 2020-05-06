@@ -92,7 +92,7 @@ public class Parser {
         final Statement ifStatement = statementOrBlock();
         final Statement elseStatement;
         if (match(TokenType.ELSE)) {
-            elseStatement = statement();
+            elseStatement = statementOrBlock();                       //!!!!!!!!!!!!!!!!!!!!!!! statement REPLACED on statementOrBlock
         } else {
             elseStatement = null;
         }

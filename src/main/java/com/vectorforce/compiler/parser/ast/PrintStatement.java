@@ -1,5 +1,10 @@
 package main.java.com.vectorforce.compiler.parser.ast;
 
+import main.java.com.vectorforce.compiler.Context;
+import main.java.com.vectorforce.compiler.vars.NumberValue;
+import main.java.com.vectorforce.compiler.vars.StringValue;
+import main.java.com.vectorforce.compiler.vars.Value;
+
 public final class PrintStatement implements Statement {
     private final Expression expression;
 
@@ -9,7 +14,28 @@ public final class PrintStatement implements Statement {
 
     @Override
     public void execute() {
-        System.out.print(expression.evaluate().asString());
+        Value expressionValue = expression.evaluate();
+        System.out.print(expressionValue);
+
+        /*
+         * Write to file
+         * */
+        String expressionToString = expression.toString();
+        Context.appendNewString("System.out.print(");
+        if (expressionValue instanceof NumberValue) {
+            Context.appendCurrentString(expressionToString);
+        } else if (expressionValue instanceof StringValue) {
+            Context.appendCurrentString("\"");
+            if (expressionToString.equals("\n")) {
+                Context.appendCurrentString("\\n");
+            } else {
+                Context.appendCurrentString(expression.toString());
+            }
+            Context.appendCurrentString("\"");
+        }
+        Context.appendCurrentString(")");
+        Context.completeLine();
+//        }
     }
 
     @Override

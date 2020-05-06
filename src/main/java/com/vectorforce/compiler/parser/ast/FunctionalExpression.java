@@ -1,5 +1,6 @@
 package main.java.com.vectorforce.compiler.parser.ast;
 
+import main.java.com.vectorforce.compiler.Context;
 import main.java.com.vectorforce.compiler.vars.*;
 
 import java.util.ArrayList;
@@ -25,10 +26,23 @@ public class FunctionalExpression implements Expression {
 
     @Override
     public Value evaluate() {
+        Context.appendNewString(name + "(");
+        int counter = 0;
+        for (Expression arg : arguments) {
+            if(counter == 0) {
+                Context.appendCurrentString(arg.toString());
+            } else {
+                Context.appendCurrentString(", " + arg.toString());
+            }
+            counter++;
+        }
+        Context.appendCurrentString(")");
+        Context.completeLine();
+
         final int size = arguments.size();
         final Value[] values = new Value[size];
         for (int index = 0; index < size; index++) {
-            values[index] = arguments.get(index).evaluate();
+//            values[index] = arguments.get(index).evaluate();
         }
         final Function function = Functions.get(name);
         if (function instanceof UserDefinedFunction) {
@@ -40,9 +54,10 @@ public class FunctionalExpression implements Expression {
             for(int index = 0; index < size; index++) {
                 Variables.set(userDefinedFunction.getArgsName(index), values[index]);
             }
-            userDefinedFunction.execute(values);
+//            userDefinedFunction.execute(values);
             Variables.pop();
         }
-        return function.execute(values);
+//        return function.execute(null);
+        return null;
     }
 }

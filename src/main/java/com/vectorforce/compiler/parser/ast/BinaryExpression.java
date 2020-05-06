@@ -21,19 +21,20 @@ public class BinaryExpression implements Expression {
         final Value value2 = expression2.evaluate();
         if (value1 instanceof StringValue) {
             final String string1 = value1.asString();
-            switch (operation){
+            switch (operation) {
                 case '*':
-                    if(!(value2 instanceof NumberValue)){
+                    if (!(value2 instanceof NumberValue)) {
                         throw new RuntimeException("Invalid type of second token");
                     }
-                    final int iterarions = (int)value2.asNumber();
+                    final int iterarions = (int) value2.asNumber();
                     final StringBuilder buffer = new StringBuilder();
-                for(int index = 0; index < iterarions; index++){
-                    buffer.append(string1);
-                }
-                return new StringValue(buffer.toString());
+                    for (int index = 0; index < iterarions; index++) {
+                        buffer.append(string1);
+                    }
+                    return new StringValue(buffer.toString());
                 case '+':
-                    default: return new StringValue(string1 + value2.asString());
+                default:
+                    return new StringValue(string1 + value2.asString());
             }
         }
 
