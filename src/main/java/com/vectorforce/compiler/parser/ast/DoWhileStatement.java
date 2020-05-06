@@ -13,6 +13,9 @@ public class DoWhileStatement implements Statement {
 
     @Override
     public void execute() {
+        /*
+         * Write to file
+         * */
         Context.appendNewString("do {");
         statement.execute();
         Context.appendNewString(" }");

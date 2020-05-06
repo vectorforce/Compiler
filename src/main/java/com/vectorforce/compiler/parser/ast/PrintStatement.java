@@ -15,7 +15,6 @@ public final class PrintStatement implements Statement {
     @Override
     public void execute() {
         Value expressionValue = expression.evaluate();
-        System.out.print(expressionValue);
 
         /*
          * Write to file
@@ -35,7 +34,6 @@ public final class PrintStatement implements Statement {
         }
         Context.appendCurrentString(")");
         Context.completeLine();
-//        }
     }
 
     @Override

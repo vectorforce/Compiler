@@ -26,6 +26,9 @@ public class FunctionalExpression implements Expression {
 
     @Override
     public Value evaluate() {
+        /*
+        * Write to file
+        * */
         Context.appendNewString(name + "(");
         int counter = 0;
         for (Expression arg : arguments) {
