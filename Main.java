@@ -1,6 +1,6 @@
 public class Main {
 	public static void main(String[] args) {
-		Double a = (-15.0);
+		Double a = (-35.0);
 		Double b = 25.0;
 		System.out.print(a);
 		System.out.print(b);
